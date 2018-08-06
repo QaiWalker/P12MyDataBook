@@ -22,12 +22,19 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity {
 
     private String[] drawerItems;
     private DrawerLayout drawerLayout;
+
     private ListView drawerList;
+    MenuItemAdapter ma;
+    private ArrayList<Integer> imageIDs;
+    private ArrayList<String> nameList;
     ArrayAdapter<String> aa;
+
     String currentTitle;
     ActionBar ab;
     private ActionBarDrawerToggle drawerToggle;
@@ -37,11 +44,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-
-
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawerList = (ListView) findViewById(R.id.left_drawer);
+        imageIDs = new ArrayList<>();
+        nameList = new ArrayList<>();
+        imageIDs = getList();
+        nameList = getNameList();
 
         fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -74,9 +82,8 @@ public class MainActivity extends AppCompatActivity {
         ab = getSupportActionBar();
         ab.setDisplayHomeAsUpEnabled(true);
 
-        aa = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_activated_1, drawerItems);
-        drawerList.setAdapter(aa);
+        ma = new MenuItemAdapter(this, imageIDs, nameList);
+        drawerList.setAdapter(ma);
 
         // Set the list's click listener
         drawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -135,5 +142,21 @@ public class MainActivity extends AppCompatActivity {
             return true;
 
         return super.onOptionsItemSelected(item);
+    }
+    public ArrayList<Integer>getList(){
+        imageIDs = new ArrayList<>();
+        imageIDs.add(R.drawable.bio);
+        imageIDs.add(R.drawable.vaccine);
+        imageIDs.add(R.drawable.anniversary);
+        imageIDs.add(R.drawable.star);
+        return imageIDs;
+    }
+    public ArrayList<String> getNameList() {
+        nameList = new ArrayList<>();
+        nameList.add("Bio");
+        nameList.add("Vaccination");
+        nameList.add("Anniversary");
+        nameList.add("About Us");
+        return nameList;
     }
 }
